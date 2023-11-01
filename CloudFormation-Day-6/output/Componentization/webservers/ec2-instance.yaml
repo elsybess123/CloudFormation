@@ -28,6 +28,9 @@ Resources:
       ImageId: !FindInMap [ DevWebserverGoldenAMImap, !Ref 'AWS::Region', GoldenAMI ]
       InstanceType: t2.micro 
       Monitoring: true
+      SecurityGroupIds:
+        - !ImportValue DevWebseverSGID
+      SubnetId: !ImportValue DevWebserverSubnetID # Importing Webserver subnet Exported name
       UserData: !Base64 |
         #!/bin/bash
         sudo su
