@@ -1,13 +1,14 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: "EC2 instance automation for our development environment"
-Metadata: {} 
+Metadata: {}
 
-Parameters:
+Parameters: 
   DevWebserverKeyName:
-    Description: Please select a keypair
-    Type: AWS::EC2::KeyPair::KeyName 
+    Description: please select a keypair
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: keypair-virginia2
 
-Mappings:
+Mappings: 
   DevWebserverGoldenAMImap:
     us-east-1:
       GoldenAMI: ami-0fc5d935ebf8bc3bc
@@ -18,21 +19,21 @@ Mappings:
     us-west-2:
       GoldenAMI: ami-0efcece6bed30fd98
 
-Conditions: {} 
+Conditions: {}
 
-Resources:
+Resources: 
   DevWebserver:
     Type: AWS::EC2::Instance
     Properties:
-      KeyName: !Ref DevWebserverKeyName   
+      KeyName: !Ref DevWebserverKeyName
       ImageId: !FindInMap [ DevWebserverGoldenAMImap, !Ref 'AWS::Region', GoldenAMI ]
-      InstanceType: t2.micro 
+      InstanceType: t2.micro
       Monitoring: true
-      SecurityGroupIds:
-        - !ImportValue DevWebseverSGID
-      SubnetId: !ImportValue DevWebserverSubnetID # Importing Webserver subnet Exported name
+      SecurityGroupIds: 
+        - !ImportValue DevWebserverSGID  # Importing Webserver SG Exporting Name
+      SubnetId: !ImportValue DevWebserverSubnetID # Importing Webserver Subnet Exported name
       UserData: !Base64 |
-        #!/bin/bash
+        #!/bin/bash 
         sudo su
         apt update -y
         apt -y install apache2
@@ -43,9 +44,9 @@ Resources:
         apt install unzip -y
         unzip jjtech-streaming-application-v1.zip
         rm -f /var/www/html/index.html
-        cp -rf jjtech-streaming-application-v1/* /var/www/html/ 
+        cp -rf jjtech-streaming-application-v1/* /var/www/html/
       Tags:
         - Key: Name
           Value: DevWebserver
- 
+
 Outputs: {}
