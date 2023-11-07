@@ -1,18 +1,30 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: This template provisions our dev network environment
-Metadata: {}
+Metadata:
+  AWS::CloudFormation::Interface: 
+    ParameterGroups: 
+      - 
+        Label: 
+          default: "Dev Network Configuration"
+        Parameters: 
+          - DevVPCCidrBlockPara
+          - DevVPCEnableDnsSupportPara
+          - DevWebserverSubnetAZPara
+          - DevWebserverSubnetCidrBlockPara
+          - DevAppserverSubnetAZPara
+          - DevAppserverSubnetCidrBlockPara
+          - DevDBserverSubnetAZPara
+          - DevDBserverSubnetCidrBlockPara
 
 Parameters: 
   # Dev VPC Parameters
   DevVPCCidrBlockPara:
     Description: Please provide your Dev VPC CidrBlock
-    Type: AWS::SSM::Parameter::Value<String>
-    
-
-    
+    Type: String
+    Default: 10.0.0.0/16
 
   DevVPCEnableDnsSupportPara:
-    Description:  Please enable Dns Support(true/false)
+    Description: Please enable Dns Support(true/false)
     Type: String
 
   # Webserver subnet parameters
@@ -22,7 +34,7 @@ Parameters:
 
   DevWebserverSubnetCidrBlockPara:
     Description: Please provide the Cidr block for your DevWebserver subnet
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: String
 
   # Appserver subnet parameters
   DevAppserverSubnetAZPara:
@@ -31,7 +43,7 @@ Parameters:
 
   DevAppserverSubnetCidrBlockPara:
     Description: Please provide the Cidr block for your DevAppserver subnet
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: String
 
   # Database subnet parameters
   DevDBserverSubnetAZPara:
@@ -40,14 +52,14 @@ Parameters:
 
   DevDBserverSubnetCidrBlockPara:
     Description: Please provide the Cidr block for your DevDBserver subnet
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: String
 
 Mappings: {}
 
 Conditions: {}
 
 Resources: 
-  #devolopment vpc
+  #Dev vpc
   DevVPC:
     Type: AWS::EC2::VPC
     Properties:
